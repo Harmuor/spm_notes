@@ -224,7 +224,8 @@ disp(V.dim) % 显示变量“V”中存储的nii文件的维度信息
 
 -   <font size=4>**TR（Repetition Time）**：是指连续两次采集全脑影像的时间间隔，即一次全脑扫描所用时间。batch中该参数的单位是秒，而很多时候我们习惯用毫秒表达，注意不要混淆（之后我们也可以展示用于查询的代码，在插个眼）。</font>
 
--   <font size=4>**TA（Acquisition Time）**：一次全脑扫描所用时间，，当我们能够获取slice order则可以填写为0；如果我们难以获取Slice Order一般按照公式：$TA = TR- \frac{TR}{\text{Number of Slices}}$算出。</font>
+-   <font size=4>**TA（Acquisition Time）**
+代表的是采集时间（Acquisition Time），指的是在一个TR周期内，从第一个切片到最后一个切片的采集时间。TA是用来校正因为切片顺序不同而导致的时间差异的。当我们能够获取slice order则可以填写为0；如果我们难以获取Slice Order一般按照公式：$TA = TR- \frac{TR}{\text{Number of Slices}}$算出。</font>
 
 -   <font size=4>**Slice Order**：指的是在一次扫描过程中获取大脑切片的顺序（后面的章节我们展示在batch上如何填写）。如果我们难以获取slice order一般按照公式：$TA = TR- \frac{TR}{\text{Number of Slices}}$，通过填写TA来弥补，这时候Slice Order我们仅仅选择顺序类型就好。以下为常见顺序类型：</font>
 
