@@ -82,6 +82,7 @@ disp(V.dim) % 显示变量“V”中存储的nii文件的维度信息
 ```         
     96    96    72 
 ```
+
 <font size=4> 那这个文件就只有一个frame。</font>
 
 <font size=4> 或者结果长这样：</font>
@@ -90,8 +91,8 @@ disp(V.dim) % 显示变量“V”中存储的nii文件的维度信息
 错误使用 disp
 输入参数太多。
 ```
-<font size=4> 那就说明这个nii四维的，包含了多个frame。至于具体几个去把工作区刚刚生成的变量V点开，点开后的表格有几行就是nii含有几个frame</font>
 
+<font size=4> 那就说明这个nii四维的，包含了多个frame。至于具体几个去把工作区刚刚生成的变量V点开，点开后的表格有几行就是nii含有几个frame</font>
 
 <font size=4> 说完什么是frame了，也说完怎么确定我们单个nii有无多重frame了，下面我们需要说一下在batch中选择文件时，如果有单个nii多重frame我们如何去选中文件（如图1-1）。如果各位在这里看不懂其实没有关系，这里是如果之后诸位遇到了相关操作细节供诸位翻回来参考的。</font>
 
@@ -223,9 +224,9 @@ disp(V.dim) % 显示变量“V”中存储的nii文件的维度信息
 
 -   <font size=4>**TR（Repetition Time）**：是指连续两次采集全脑影像的时间间隔，即一次全脑扫描所用时间。batch中该参数的单位是秒，而很多时候我们习惯用毫秒表达，注意不要混淆（之后我们也可以展示用于查询的代码，在插个眼）。</font>
 
--   <font size=4>**TA（Acquisition Time）**：一次全脑扫描所用时间，一般按照公式：$TA = TR- \frac{TR}{\text{Number of Slices}}$算出。</font>
+-   <font size=4>**TA（Acquisition Time）**：一次全脑扫描所用时间，，当我们能够获取slice order则可以填写为0；如果我们难以获取Slice Order一般按照公式：$TA = TR- \frac{TR}{\text{Number of Slices}}$算出。</font>
 
--   <font size=4>**Slice Order**：指的是在一次扫描过程中获取大脑切片的顺序（后面的章节我们展示在batch上如何填写）。以下为常见顺序类型：</font>
+-   <font size=4>**Slice Order**：指的是在一次扫描过程中获取大脑切片的顺序（后面的章节我们展示在batch上如何填写）。如果我们难以获取slice order一般按照公式：$TA = TR- \frac{TR}{\text{Number of Slices}}$，通过填写TA来弥补，这时候Slice Order我们仅仅选择顺序类型就好。以下为常见顺序类型：</font>
 
     1 升序（Ascending）：从负方向到正方向采集切片，例如，从下到上（1, 2, 3, …）。
 
@@ -237,7 +238,7 @@ disp(V.dim) % 显示变量“V”中存储的nii文件的维度信息
 
 ### 易造成困惑的操作
 
-<font size=4> 以上我们介绍了一些理解起来有些费力的参数，下面我们来介绍以下这些参数怎么填，以及如果不知道怎么在程序里查找。</font>
+<font size=4> 以上我们介绍了一些理解起来有些费力的参数，下面我们来介绍以下这些参数怎么填，以及如果不知道是多少怎么在程序里查找。\*\*请注意，这些参数以本笔记的水准用代码未必能够百分之百地查出，所以最好的办法仍然是在数据下载页面找到研究者的参数说明。所以以下的方法仅仅是针对一些时候我们用于亡羊补牢的时候，不要太依赖。</font>
 
 #### **查询Number of Slice**
 
@@ -266,7 +267,17 @@ nslice = dims(3);
 
 #### **如何查询TR**
 
-<font size=4>在确定好软件工作路径后，仅输入：`info = niftiinfo('文件名.nii')`即可，其中别忘了文件名改对。在之后工作区会生成`info`文件，我们需要点击打开，之后的`description`项目有TR的属性（见图3-4）。</font>
+<font size=4>在确定好软件工作路径后，可以输入代码：
+
+```         
+% 加载fMRI数据
+fmri_data = spm_vol('your_fmri_data.nii');
+
+% 获取TR（重复时间）
+TR = fmri_data(1).private.timing.tspace;
+```
+
+其中别忘了文件名改对。在之后工作区可能会生成`TR`文件，甚至我们不需要点开（见图3-4），不过图中由`fmri_data = spm_vol('bold.nii');`生成的结构也是一个有趣的东西。</font>
 
 ![<font size=3 face="宋体">图3-4 MATLAB中查询TR</font>](TR_value.png){width="1600"}
 
