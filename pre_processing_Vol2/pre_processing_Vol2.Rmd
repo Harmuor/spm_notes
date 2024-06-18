@@ -214,7 +214,9 @@ output:
 
 ![<font size=3 face="宋体">图6-1 图形计算器实现脑提取</font>](open_image_calculator.png)
 
-<font size=4> 而在图6-1中，输入图像则是刚刚Segmentation中我们保留的**与原始扫描空间对应的组织类别图像**（`c_*.nii`文件）和**经过偏差校正的图像**（`ms_*.nii文件`）</font>
+<p>
+
+<font size=4> 而在图6-1中，输入图像则是刚刚Segmentation中我们保留的**与原始扫描空间对应的组织类别图像**（`c_*.nii`文件）和**Bias Corrected图像**（`ms_*.nii文件`）</font>
 
 <font size=4> 而**Expression**参数根据何教授培训，可以输入公式`i1.* ((i2 + i3 +i4) > 0.5)`。之后运行程序，我们便可以在刚刚设置的输出路径中得到我们的去除颅骨头皮的T1加权结构性图像。</font>
 
