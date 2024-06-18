@@ -1,5 +1,5 @@
 ---
-title: "pre_processing_Vol3"
+title: "spm fMRI 初学者笔记 #3"
 author: "程诚柏然"
 date: "2024-06-19"
 output: 
