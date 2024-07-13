@@ -1,16 +1,22 @@
 ---
-title: "mission 5"
+title: "心理生理分析 Psycho-Physiological Interaction Analysis"
 author: "程诚柏然"
 date: "`r Sys.Date()`"
 output:
   html_document:
     toc: true
     toc_float: true
-  pdf_document:
-    toc: true
   word_document:
     toc: true
 ---
+
+# 重要声明
+
+<font size=4>此份步骤文档由于后期在文字上有所修改，对应配图中一些文件的具体命名未能够即使同步，但是笔者认为这些未来得及进行同步之处均在于细微差异，如后面某文件名在文字说明中被改为了`VOI_14_nature_TempSupR.mat`，但图片中仍显示为`VOI_Temp_Sup_R.mat`尽管看起来改动很大，其实通过`VOI_*`前缀我们仍能够知道这个是用到的种子点文件，而种子点文件在全文只存在唯一一个（PPI变量文件也是，前缀为`PPI_*`）。</font>
+
+<font size=4>另外，本文中的一些参数细节设定并非规范正统，笔者郑重提醒，**这些细节设定需要各位根据实际的研究目的、研究需求进行修改**，“尽信书不如无书”是也。</font>
+
+***
 
 # 总概
 
@@ -25,6 +31,8 @@ output:
 <font size=4>通过分析这三个项之间的关系，PPI可以揭示在不同任务条件下，脑区之间的功能连接是否发生变化。</font>
 
 <font size=4>PPI分析在SPM（Statistical Parametric Mapping）软件中有详细的实现步骤，可以帮助研究者进行任务态fMRI数据的功能连接分析。</font>
+
+***
 
 # 具体步骤
 
@@ -45,13 +53,13 @@ output:
 
 <font size=4>在我们完成一阶处理后，得到了个体水平上、不同condition的对比，这些对比写在了一阶生成的`SPM.mat`中，而选取VOI种子点就需要在这个基础上进行。这个过程我们可以想象是把原料（咖啡豆磨粉）放入加热壶得到加工产物（咖啡液体）的过程，咖啡豆磨粉是一阶`SPM.mat`、半成品咖啡液体是得到的`VOI_*.mat`。</font>
 
-<font size=4>首先在spm界面我们选择`result`进入结果查看，导入被试1_fz0-6_1st的文件，这里我们多项选择`inhibition`、`distraction`、`distance`仨condition，然后选择“done”（如图2）。</font>
+<font size=4>假设我们关注于`nature`条件下的PPI分析，那么首先首先在spm界面我们选择`result`进入结果查看，导入被试1_fz0-6_1st的文件，这里我们选择`nature`这一条件，然后选择“done”（如图2）。</font>
 
 ![<font size=3 face="宋体">图2 导入VOI的“原料”</font>](VOI_1st_step.png){width="400"}
 
 <p>
 
-<font size=4>在之后的结果校正选项中，我们进行如下选择：`conj'n`、应用mask上我们选择`none`、多重比较校正选择`FWE`（p值设定为0.05）、阈值体素（`Extend Threshold Voxel`）设定为`10`（见图3）。进行好以上设定后得到统计参数图。</font>
+<font size=4>在之后的结果校正选项中，我们可进行如下选择：`conj'n`、应用mask上我们选择`none`、多重比较校正选择`FWE`（p值设定为0.05）、阈值体素（`Extend Threshold Voxel`）设定为`10`（见图3），当然，这些参数的具体选择我们应该根据实际情况灵活决定，这里的操作仅供参考。进行好以上设定后得到统计参数图。</font>
 
 ![<font size=3 face="宋体">图3 对参数统计图的设置</font>](VOI_step2.png){width="380"}
 
@@ -73,7 +81,7 @@ output:
 
 ## 生成PPI变量文件
 
-<font size=4>进行PPI分析需要我们准备好**生理项**、**心理项**和**交互项**，其中在之前的步骤中我们已经准备好了生理项的文件载体，即右侧颞上回的种子点文件`VOI_Temp_Sup_R.mat`，而在这一部分的操作中，我们将生成**心理项**和**交互项**的文件载体--PPI变量文件。</font>
+<font size=4>进行PPI分析需要我们准备好**生理项**、**心理项**和**交互项**，其中在之前的步骤中我们已经准备好了生理项的文件载体，即右侧颞上回的种子点文件`VOI_14_nature_TempSupR`，而在这一部分的操作中，我们将生成**心理项**和**交互项**，以及真正要在PPI分析中用到的`生理项`的文件载体--PPI变量文件。</font>
 
 <font size=4>通俗来理解的话，我们可以想象这一个步骤是将牛奶和咖啡倒入机器制作卡布奇诺的过程，而这里的牛奶和咖啡可以对应我们一阶`SPM.mat`和刚刚生成的`VOI_*.mat`文件。</font>
 
@@ -83,21 +91,20 @@ output:
 
 <p>
 
-<font size=4>选中后，程序会询问我们要进行**心理生理交互（`psycho-physiological interaction`）分析**还是生理生理交互分析，在选择`psycho-physiological interaction`之后，程序紧接着会弹出另一对话框提示我们选择对应的`VOI_*.mat`文件。刚刚我们说过，我们这次假定感兴趣的种子点是右侧颞上回，因而我们这里要选择的种子点文件便是在上一步生成的`VOI_Temp_Sup_R.mat`（如图7）。</font>
+<font size=4>选中后，程序会询问我们要进行**心理生理交互（`psycho-physiological interaction`）分析**还是生理生理交互分析，在选择`psycho-physiological interaction`之后，程序紧接着会弹出另一对话框提示我们选择对应的`VOI_*.mat`文件。刚刚我们说过，我们这次假定感兴趣的种子点是右侧颞上回，因而我们这里要选择的种子点文件便是在上一步生成的`VOI_14_nature_TempSupR`（如图7）。</font>
 
 ![<font size=3 face="宋体">图7 选择PPI类型和VOI文件</font>](PPIs_step2.png){width="360"}
 
 <p>
 
-<font size=4>这之后，程序会需要我们选择纳入的conditon和其在多元线性回归中的权重，这取决于我们之后的数据分析需求和实验设计以及研究目的，此处我们仅仅针对操作的流程，假定我们想要比较`3strategies > nature`这个condition，那么其中我们可以这样设置权重：</font>
+<font size=4>这之后，程序会需要我们选择纳入的conditon和其在多元线性回归中的权重，这取决于我们之后的数据分析需求和实验设计以及研究目的，此处我们仅仅针对操作的流程，假定我们想要比较`nature`这个condition，那么其中我们可以这样设置权重：</font>
 
--   <font size=3>将三种策略`inhibition`、`distraction`、`distance`的权重分别设置为**1**</font>
 
--   <font size=3>`nature`的权重设置为**-3**</font>
+-   <font size=3>`nature`的权重设置为**1**</font>
 
--   <font size=3>`blank`我们选择**不纳入回归方程**。</font>
+-   <font size=3>`blank`、`inhibition`、`distraction`、`distance`这三个conditon我们选择**不纳入回归方程**。</font>
 
-<font size=4>注意，该参数之后再具体工作中的设置需要根据教授的要求**具体情况具体修改**。最后程序会让我们设置PPI变量文件的名称，这里我们假如输入“TemSupR_3vsNature”，程序也是会自动加上一个`PPI_*`前缀，因而我们最后得到的文件是`PPI_TemSupR_3vsNature.mat`。设置好后自动返回给我们一张结果图片。这里按照笔者标示，表（1）是VOI生理项Bold信号的时间序列；表（2）是心理项的信号时间序列；表（3）是心理生理交互项的信号事件序列（见图8）。之后，再`VOI_Temp_Sup_R.mat`的所在路径我们得到了**心理项**和**交互项**以及**生理项**的文件载体`PPI_TemSupR_3vsNature.mat`。</font>
+<font size=4>注意，该参数之后再具体工作中的设置需要根据教授的要求**具体情况具体修改**。最后程序会让我们设置PPI变量文件的名称，这里我们假如输入“14_nature”，程序也是会自动加上一个`PPI_*`前缀，因而我们最后得到的文件是`PPI_14_nature.mat`。设置好后自动返回给我们一张结果图片。这里按照笔者标示，表（1）是VOI生理项Bold信号的时间序列；表（2）是心理项的信号时间序列；表（3）是心理生理交互项的信号事件序列（见图8）。之后，在`VOI_14_nature_TempSupR`的所在路径我们得到了**心理项**和**交互项**以及**生理项**的文件载体`PPI_14_nature.mat`。</font>
 
 ![<font size=3 face="宋体">图8 PPIs流程生成的时间序列图片</font>](PPIs_images.png){width="420"}
 
@@ -105,7 +112,7 @@ output:
 
 ## 构建回归模型的准备工作
 
-<font size=4>在之前的步骤中，我们知道PPI分析是将心理项、生理项、和交互项对目标脑区Blod信号时间序列来一个多元线性回归。而现在我们已经得到了VOI文件和PPI文件（即`VOI_Temp_Sup_R.mat`和`PPI_TempSupR_3vsNature.mat`）是不是就可以在回个归了呢。并不，我们之前总是比如说`PPI_TempSupR_3vsNature.mat`是心理项、生理项和交互项的**文件载体**云云。也就是说，我们想要对不同的项目来回个归还需要把其对应的值从文件中提取出来。这部分就是将心理项、生理项以及交互项的`value`从文件中取出来。</font>
+<font size=4>在之前的步骤中，我们知道PPI分析是将心理项、生理项、和交互项对目标脑区Blod信号时间序列来一个多元线性回归。而现在我们已经得到了VOI文件和PPI文件（即`VOI_14_nature_TempSupR.mat`和`PPI_14_nature.mat`）是不是就可以在回个归了呢。并不，我们之前总是比如说`PPI_14_nature.mat`是心理项、生理项和交互项的**文件载体**云云。也就是说，我们想要对不同的项目来回个归还需要把其对应的值从文件中提取出来。这部分就是将心理项、生理项以及交互项的`value`从文件中取出来。</font>
 
 <font size=4>在这个步骤，我们可以首先创建一个`n*3`的Excel表格，其中n为你实际分析的图片数量或者说frame数量。而这三列依次可以是**PPI交互项**、**VOI的Blod信号**（生理项）、**心理任务向量**（心理项）：</font>
 
@@ -118,7 +125,7 @@ output:
 
 <p>
 
-<font size=4>做成之后，我们接着就需要把实际的各项数据从载体文件中提取出来，复制粘贴进我们的整理表格了。这里假如我们首先去找生理项的数据。我们在MATLAB中打开对应的文件工作路径，加载VOI对应的mat文件：`load('PPI_TempSupR_3vsNature.mat')`，之后我们可以在工作区中看到该文件中有一个名为`PPI`的变量，我们查阅这个变量其中又包含`Y`、`P`和`ppi`这仨变量表格，它仨分别对应了生理项、任务项和交互项的值，把这仨变量表格里的数值复制粘贴到我们的Excel表格里备用就可以了。</font>
+<font size=4>做成之后，我们接着就需要把实际的各项数据从载体文件中提取出来，复制粘贴进我们的整理表格了。这里假如我们首先去找生理项的数据。我们在MATLAB中打开对应的文件工作路径，加载VOI对应的mat文件：`load('PPI_14_nature.mat.mat')`，之后我们可以在工作区中看到该文件中有一个名为`PPI`的变量，我们查阅这个变量其中又包含`Y`、`P`和`ppi`这仨变量表格，它仨分别对应了生理项、任务项和交互项的值，把这仨变量表格里的数值复制粘贴到我们的Excel表格里备用就可以了。</font>
 
 ![<font size=3 face="宋体">图9 提取生理项数据</font>](extracting_terms.png){width="550"}
 
@@ -128,7 +135,7 @@ output:
 
 ```         
 % 加载PPI.mat文件
-load('PPI_TempSupR_3vsNature.mat');
+load('PPI_14_nature.mat');
 
 % 提取心理任务向量
 Psych_variable = PPI.P;
@@ -146,7 +153,7 @@ V2_BOLD = PPI.Y;
 
 <font size=4>在前文中我们提到过，PPI分析可以被看作多元线性模型在fMRI数据中的应用，那么既然是回归，我们便需要再次定义一般线性模型。而在spm的`model specification`模块中，便对应了我们需要把心理项、生理项和交互项放进回归方程里。这里的操作如果从0开始做的话整个流程和我们之前在培训时的数据一阶处理内容很像，这里其实我们可以直接将当时一阶的对应条件batch拿来改一改再用。</font>
 
-<font size=4>我们可以加载出之前fz0-6用的一阶batch，其他的条件和参数没有特殊要求可以不改，这里PPI分析只是在`model specification`中添加心理项、生理项、交互项这三者的回归（如图10），每个变量的名字`name`可以根据需要更改，对应的`value`就是刚刚我们在`PPI_TempSupR_3vsNature.mat`里往Excel表格里复制粘贴的那些值，这里对应填写上即可。</font>
+<font size=4>我们可以加载出之前fz0-6用的一阶batch，其他的条件和参数没有特殊要求可以不改，这里PPI分析只是在`model specification`中添加心理项、生理项、交互项这三者的回归（如图10），每个变量的名字`name`可以根据需要更改，对应的`value`就是刚刚我们在`PPI_14_nature.mat`里往Excel表格里复制粘贴的那些值，这里对应填写上即可。</font>
 
 ![<font size=3 face="宋体">图10 在`Regressor`中添加PPI变量</font>](adding_PPI_variables.png){width="420"}
 
@@ -164,7 +171,7 @@ V2_BOLD = PPI.Y;
 
 <font size=4>不过这里有个疑问需要解决，我本来的VOI就是在特定任务条件下选取的，怎么就这里说不涉及任务条件的影响了呢？这是因为尽管原始的时间序列虽然的确反映了某区域在整个试验期间的活动，但是在生成PPI文件的时候这个时间序列会经过去卷积和再卷积处理，以去除与任务时间的直接关系。因而说PPI的这个生理Bold和任务没关系。</font>
 
-<font size=4>那么说到这里，我们继续进行最后一步的说明，即我们将PPI交互项加入`contrast manager`中。其实就是创建一个新的t-contrast，`name`就是写交互项比如“inter—PPI”、`weight vector`我因为之前定义回归模型的顺序是心理项、生理项和交互项，那么这里我的权重就是填`[0 0 0 0 0 0 0 1]`（如图11，前5个0对应我们原有的5个condition，后3个0对应我们的交互项、心理项和生理项）。</font>
+<font size=4>那么说到这里，我们继续进行最后一步的说明，即我们将PPI交互项加入`contrast manager`中。其实就是创建一个新的t-contrast，`name`就是写交互项比如“nature_ppi”、`weight vector`我因为之前定义回归模型的顺序是心理项、生理项和交互项，那么这里我的权重就是填`[0 0 0 0 0 1 0 0 ]`（如图11，前5个0对应我们原有的5个condition，后3个0对应我们的交互项、心理项和生理项）。</font>
 
 ![<font size=3 face="宋体">图11 填写交互项的t对比</font>](adding_inter_contrast.png){width="400"}
 
@@ -197,3 +204,16 @@ V2_BOLD = PPI.Y;
 > 普通一阶分析：可能由于统计功效不足，未能检测到某些脑区的显著信号。
 >
 > PPI分析：通过考虑交互作用，可能提高了检测某些脑区信号的统计功效。
+
+***
+
+# 笔者邮箱
+
+<font size=3 face="宋体">[程诚柏然](mailto:harmuorwork@.com "harmuorwork@qq,com 欢迎交流")</font>
+
+推荐阅读：
+
+<https://www.fil.ion.ucl.ac.uk/spm/docs/manual/ppi/ppi/>
+
+
+<https://andysbrainbook.readthedocs.io/en/latest/SPM/SPM_Short_Course/SPM_PPI.html>
