@@ -321,7 +321,7 @@ TR = fmri_data(1).private.timing.tspace;
 
 # 笔者邮箱
 
-<font size=3 face="宋体">[程诚柏然](mailto:harmuorwork@.com "harmuorwork@qq,com 欢迎交流")</font>
+<font size=3 face="宋体">[程诚柏然](mailto:harmuorwork@.com "harmuorwork@qq.com 欢迎交流")</font>
 
 # 以后有机会钻研的东西
 

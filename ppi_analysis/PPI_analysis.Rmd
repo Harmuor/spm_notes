@@ -209,7 +209,7 @@ V2_BOLD = PPI.Y;
 
 # 笔者邮箱
 
-<font size=3 face="宋体">[程诚柏然](mailto:harmuorwork@.com "harmuorwork@qq,com 欢迎交流")</font>
+<font size=3 face="宋体">[程诚柏然](mailto:harmuorwork@.com "harmuorwork@qq.com 欢迎交流")</font>
 
 推荐阅读：
 
